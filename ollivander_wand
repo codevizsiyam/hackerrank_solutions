@@ -1,0 +1,7 @@
+with min_c as (select w.id,w.code,w.coins_needed,w.power,rank() over(partition by w.code,w.power order by w.coins_needed asc) rn
+from wands w)         
+select id,age,coins_needed,power 
+from min_c,
+wands_property wp
+where min_c.code= wp.code and wp.is_evil=0 and rn=1
+order by power desc , age desc;
